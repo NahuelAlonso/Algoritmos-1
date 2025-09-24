@@ -43,3 +43,4 @@ digitoUnidades n = mod (absoluto n) 10
 
 digitoDecenas:: Integer -> Integer
 digitoDecenas n = mod (absoluto n) 100 - digitoUnidades n
+
