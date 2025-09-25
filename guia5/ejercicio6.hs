@@ -11,3 +11,9 @@ agregarATodos num (cabeza : cola) =
 agregarATodosRecursiva :: Integer -> [Integer] -> [Integer]
 agregarATodosRecursiva _ [] = []
 agregarATodosRecursiva num (cabeza : cola) = cabeza + num : agregarATodosRecursiva num cola
+
+{--
+partes :: Integer -> Set (Set Integer) que genere todos los subconjuntos del conjunto {1, 2, . . . , n}.
+--}
+
+partes :: Integer -> [[Integer]]
