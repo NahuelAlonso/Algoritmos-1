@@ -1,0 +1,451 @@
+<h1>Parcial - tema2</h1>
+<p>Nota: 10 / 10.0 (APROBADO)</p>
+<pre><code>puntaje ej1: 2
+puntaje ej2: 2
+puntaje ej3: 2
+puntaje ej4: 2
+puntaje ej5: 1
+puntaje ej6: 1
+</code></pre>
+<h2>Datos del alumno</h2>
+<p>Nombre: Nahuel Alonso</p>
+<p>DNI: 45809011</p>
+<p>LU: 692/25</p>
+<p>Maquina: 63-04</p>
+<h2>Enunciado</h2>
+<!doctype html>
+<html>
+<head>
+  <link rel="icon" href="data:,">
+  <link href="css/style.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <div>
+    <h1>Parcial Haskell - Tema 2 - Turno tarde</h1>
+
+    <h2>Importante</h2>
+    <p>
+      Template de funciones a implementar <a href="#" onclick="forceDownload('/parcial/Template_t2.hs','SolucionT2.hs');">acá</a><br>
+      Lista de funciones permitidas <a href="/static/haskell_permitidas.html">acá</a><br>
+      Ejemplo de hunit <a href="#" onclick="forceDownload('/parcial/Test_template_t2.hs','Test_template_t2.hs');">acá</a>
+    </p>
+
+    <form name="form1" action="/submit_examen" method="post" enctype="multipart/form-data" onsubmit="return validaciones(event)">
+      <h2>Enunciado</h2>
+
+      <ol>
+          <p>
+            Resolver los siguientes ejercicios cuyas especificaciones en lenguaje semiformal figuran a continuación. 
+            Deben ser implementadas en Haskell utilizando los tipos requeridos y solamente las funciones que se ven en 
+            la materia Introducción a la Programación / Algoritmos y Estructuras de Datos I (FCEyN-UBA).
+          </p>
+
+        <li>
+          <strong>Ejercicio 1 (2 puntos)</strong>
+          <p>
+            problema mayorFibonacciEnRango (<i>d</i>: Z, <i>h</i>: Z) : Z {<br>
+            &nbsp; <strong>requiere:</strong> {<i>d</i> ≥ 0} <br>
+            &nbsp; <strong>requiere:</strong> {<i>h</i> ≥ <i>d</i>} <br>
+            &nbsp; <strong>requiere:</strong> {El rango [<i>d</i>, <i>h</i>] contiene al menos un número de Fibonacci} <br>
+            &nbsp; <strong>asegura:</strong> {<i>res</i> es el mayor número de Fibonacci que pertenece al rango [<i>d</i>, <i>h</i>]} <br>
+            }<br>
+          </p>
+
+          <p>
+            <strong>Aclaración:</strong> Un número es de Fibonacci es aquel que pertenece a la secuencia: 0, 1, 1, 2, 3,
+            5, 8, 13, 21, 34, ... definida por la fórmula: F(0) = 0, F(1) = 1, y para n ≥ 2: F(n) = F(n-1) + F(n-2).
+          </p>
+
+          <pre style="background-color: #f0f0f0; /* Color de fondo del recuadro */
+padding: 2px; /* Espacio interior */
+border: 1px solid #ccc; /* Borde del recuadro */
+border-radius: 5px; /* Bordes redondeados */">
+Ejemplo 1: <b>mayorFibonacciEnRango 4 10</b> debe devolver <b>8</b>
+Ejemplo 2: <b>mayorFibonacciEnRango 5 8</b> debe devolver <b>8</b>
+Ejemplo 3: <b>mayorFibonacciEnRango 13 13</b> debe devolver <b>13</b>
+          </pre>
+        </li>
+
+        <li>
+          <strong>Ejercicio 2 (2 puntos)</strong>
+          <p>
+            problema esMontaniaRusa (<i>l</i>: seq⟨Z⟩) : Bool {<br>
+            &nbsp; <strong>requiere:</strong> {True} <br>
+            &nbsp; <strong>asegura:</strong> {<i>res</i> = true <=> <i>l</i> es una secuencia montaña rusa} <br>
+            }<br>
+          </p>
+
+          <p>
+            <strong>Aclaración:</strong> Una secuencia montaña rusa es aquella donde las diferencias entre elementos
+            consecutivos se alternan entre positivas y negativas (estrictos). Si la primera diferencia es positiva, 
+            la siguiente será negativa, y así sucesivamente (también puede ser que la primera diferencia sea negativa, 
+            la siguiente positiva, etc.).
+          </p>
+
+          <pre style="background-color: #f0f0f0; /* Color de fondo del recuadro */
+padding: 2px; /* Espacio interior */
+border: 1px solid #ccc; /* Borde del recuadro */
+border-radius: 5px; /* Bordes redondeados */">
+Ejemplo 1: <b>esMontaniaRusa [1,2,4]</b> debe devolver <b>False</b>
+Ejemplo 2: <b>esMontaniaRusa [3,1,4,0]</b> debe devolver <b>True</b>
+          </pre>
+        </li>
+
+        <li>
+          <strong>Ejercicio 3 (2 puntos)</strong>
+          <p>
+            Recibimos un listado con todos los libros disponibles en una biblioteca. Cada libro tiene un autor y un título
+            (primera y segunda componente del par respectivamente). El objetivo es crear un catálogo, es decir una lista
+            de tuplas cuya primera componente es el autor y la segunda es la lista de todos sus títulos.
+          </p>
+
+          <p>
+            problema catalogoPorAutores (<i>libros</i>: seq⟨⟨String x String⟩⟩) : seq⟨⟨String x seq⟨String⟩⟩⟩ {<br>
+            &nbsp; <strong>requiere:</strong> {<i>libros</i> no contiene elementos repetidos} <br>
+            &nbsp; <strong>asegura:</strong> {Los autores que aparecen en <i>res</i> son los mismos que aparecen en <i>libros</i>} <br>
+            &nbsp; <strong>asegura:</strong> {<i>res</i> es un catálogo donde cada autor aparece una sola vez junto con la lista de todos sus títulos} <br>
+            }<br>
+          </p>
+
+          <pre style="background-color: #f0f0f0; /* Color de fondo del recuadro */
+padding: 2px; /* Espacio interior */
+border: 1px solid #ccc; /* Borde del recuadro */
+border-radius: 5px; /* Bordes redondeados */">
+Ejemplo 1: <b>catalogoPorAutores [("García Márquez","Cien años de soledad"),("Borges","Ficciones"),("García Márquez","El amor en los tiempos del cólera")]</b> puede devolver 
+<b>[("García Márquez",["Cien años de soledad","El amor en los tiempos del cólera"]),("Borges",["Ficciones"])]</b><br>
+Ejemplo 2: <b>catalogoPorAutores [("Poe","El cuervo")]</b> debe devolver <b>[("Poe",["El cuervo"])]</b>
+          </pre>
+        </li>
+
+        <li>
+          <strong>Ejercicio 4 (2 puntos)</strong>
+          <p>
+            problema filaDelMaximo (<i>matriz</i>: seq⟨seq⟨Z⟩⟩) : Z {<br>
+            &nbsp; <strong>requiere:</strong> {<i>matriz</i> no está vacía y todas sus filas tienen al menos un elemento} <br>
+            &nbsp; <strong>requiere:</strong> {Todos los elementos de <i>matriz</i> tienen la misma longitud} <br>
+            &nbsp; <strong>requiere:</strong> {No hay elementos repetidos en <i>matriz</i>} <br>
+            &nbsp; <strong>asegura:</strong> {<i>res</i> es el número de fila (indexando desde 1) que contiene el valor máximo de toda la matriz} <br>
+            }<br>
+          </p>
+
+          <pre style="background-color: #f0f0f0; /* Color de fondo del recuadro */
+padding: 2px; /* Espacio interior */
+border: 1px solid #ccc; /* Borde del recuadro */
+border-radius: 5px; /* Bordes redondeados */">
+Ejemplo 1: <b>filaDelMaximo [[1,2,3],[4,5,6],[7,8,9]]</b> debe devolver <b>3</b>
+          </pre>
+        </li>
+
+        <li>
+          <strong>Ejercicio 5 (1 punto)</strong>
+          <p>
+            Conteste marcando la opción correcta asumiendo que &alpha; y &beta; son dos fórmulas de la lógica proposicional 
+            tales que &alpha; es más fuerte que &beta;:
+          </p>
+
+          <p>
+            <input type="radio" name="mchoice_1" id="opcion1" value="1" />
+            <label for="opcion1">&beta; &rarr; &alpha; es necesariamente una tautología</label> <br>
+            <input type="radio" name="mchoice_1" id="opcion2" value="2" />
+            <label for="opcion2">&beta; &rarr; &alpha; podría ser una tautología (y también podría no serlo)</label> <br>
+            <input type="radio" name="mchoice_1" id="opcion3" value="3" />
+            <label for="opcion3">&alpha; &rarr; &beta; podría ser una tautología (y también podría no serlo)</label> <br>
+          </p>
+        </li>
+
+        <li>
+          <strong>Ejercicio 6 (1 punto)</strong>
+          <p>
+            Respecto al testing de caja negra, conteste marcando la opción correcta asumiendo que se cuenta con la siguiente especificación:
+          </p>
+
+          <p>
+            problema unaFuncionQueHaceAlgo (<i>n</i>: Z) : Z {<br>
+            &nbsp; <strong>requiere:</strong> {<i>n</i> > 0} <br>
+            &nbsp; <strong>asegura:</strong> {<i>res</i> = n+1 ∨ <i>res</i> = n-1} <br>
+            }<br>
+          </p>
+
+          <p>
+            <input type="radio" name="mchoice_2" id="opcion1_2" value="1" />
+            <label for="opcion1_2">No es posible armar un caso de test para <i>n</i> = 0 porque no sabemos cuál es exactamente el resultado esperado</label> <br>
+            <input type="radio" name="mchoice_2" id="opcion2_2" value="2" />
+            <label for="opcion2_2">No es necesario testear el caso <i>n</i> = 0</label> <br>
+            <input type="radio" name="mchoice_2" id="opcion3_2" value="3" />
+            <label for="opcion3_2">Debo armar dos casos de test para <i>n</i> = 0, en uno el resultado esperado debe ser 1, y en el otro -1.</label> <br>
+          </p>
+        </li>
+      </ol>
+
+      <hr>
+      <h3 style="color:#1A5276">Adjunta el archivo con tu solución:</h3>
+      <p><b style="color:red">Solo se puede adjuntar 1 archivo de extensión .hs. En caso de haber desarrollado tests propios, no deben ser entregados.</b></p>
+
+      <label for="archivo">Seleccionar archivo a enviar:</label>
+      <input type="file" id="archivo" name="archivo" required accept=".hs,text/x-haskell" />
+
+      <input type="submit" value="Enviar" style="background-color: #1A5276; border-radius: 5px;
+                margin-top:10px;padding: 10px 150px;color: #FFFFFF;
+                font-size: 20px;cursor: pointer; width:100%">
+    </form>
+  </div>
+
+  <script>
+    function validaciones(event) {
+      var confirmacion = confirm("Confirmo que revise mis respuestas y que quiero entregar mi examen");
+      if (!confirmacion) {
+        event.preventDefault();
+        event.returnValue = false;
+        return false;
+      }
+      event.returnValue = true;
+      return true;
+    }
+
+    // registro una funcion para mostrar el archivo cuando se adjunta.
+    // de esa forma evitamos que se adjunten otros archivos por error
+    document
+      .getElementById('archivo')
+      .addEventListener(
+        'change',
+        function () {
+          var fr = new FileReader();
+          fr.onload = function () {
+            alert(this.result);
+          };
+          fr.readAsText(this.files[0]);
+        }
+      );
+
+    // para forzar a bajar el template de hunit y que no se pueda abrir en un nuevo tab
+    // (el browser intenta mostrar el codigo como HTML y el formato se ve raro)
+    function forceDownload(url, filename) {
+      fetch(url).then(function (t) {
+        return t.blob().then((b) => {
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(b);
+          a.setAttribute("download", filename);
+          a.click();
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
+<h2>Solucion entregada por el alumno</h2>
+<pre><code>{--
+Yo: COMPLETE SU NOMBRE ACÁ
+Certifico que el siguiente archivo fue elaborado únicamente por mí, sin ayuda de otras personas o herramientas.
+--}
+
+
+module SolucionT2 where
+
+-- Ejercicio 1: Encontrar el mayor número de Fibonacci en un rango
+mayorFibonacciEnRango :: Integer -&gt; Integer -&gt; Integer
+mayorFibonacciEnRango desde hasta
+    | esFibo hasta 0 = hasta
+    | otherwise = mayorFibonacciEnRango desde (hasta-1)
+
+nesimoFibo :: Integer -&gt; Integer
+nesimoFibo 0 = 1
+nesimoFibo 1 = 1
+nesimoFibo num = nesimoFibo (num-1) + nesimoFibo (num-2)
+
+
+esFibo :: Integer -&gt; Integer -&gt; Bool
+esFibo num desde
+    | num &gt; nesimoFibo desde = esFibo num (desde+1)
+    | num == nesimoFibo desde = True
+    | otherwise = False
+
+
+
+
+-- Ejercicio 2: Verificar si una secuencia es montaña rusa
+esMontaniaRusa :: [Integer] -&gt; Bool
+esMontaniaRusa lista = 
+    esMontaniaRusaRecursiva lista True || esMontaniaRusaRecursiva lista False 
+
+esMontaniaRusaRecursiva :: [Integer] -&gt; Bool -&gt; Bool
+esMontaniaRusaRecursiva [] _ = True
+esMontaniaRusaRecursiva [ultimoNum] _ = True
+esMontaniaRusaRecursiva (num1 : num2 : cola) debeSerPos
+    | num1 - num2 &lt; 0 &amp;&amp; not debeSerPos = esMontaniaRusaRecursiva (num2 : cola) (not debeSerPos)
+    | num1 - num2 &gt; 0 &amp;&amp; debeSerPos = esMontaniaRusaRecursiva (num2 : cola) (not debeSerPos)
+    | otherwise = False
+
+
+-- Ejercicio 3: Crear catálogo de libros por autores
+catalogoPorAutores :: [(String, String)] -&gt; [(String, [String])]
+catalogoPorAutores [] = []
+catalogoPorAutores (cabeza : cola) =
+    (fst cabeza, obtenerLibros (fst cabeza) (cabeza: cola)) :
+        catalogoPorAutores (quitarAutor (fst cabeza) (cabeza: cola) )
+
+obtenerLibros :: String -&gt; [(String, String)] -&gt; [String]
+obtenerLibros _ [] = []
+obtenerLibros autorBuscado ((autor, libro) : cola)
+    | autor == autorBuscado = libro : obtenerLibros autorBuscado cola
+    | otherwise = obtenerLibros autorBuscado cola
+
+quitarAutor :: String -&gt; [(String, String)] -&gt; [(String, String)]
+quitarAutor _ [] = []
+quitarAutor autorBuscado ((autor, libro):cola) 
+    | autor == autorBuscado = quitarAutor autorBuscado cola
+    | otherwise = (autor,libro) : quitarAutor autorBuscado cola
+
+
+
+
+-- Ejercicio 4: Encontrar la fila que contiene el valor máximo de una matriz
+filaDelMaximo :: [[Integer]] -&gt; Integer
+filaDelMaximo matriz = fst (obtenerMaximoDeTuplas (filaConMaximo matriz 1))
+
+obtenerMaximoDeTuplas :: [(Integer, Integer)] -&gt; (Integer, Integer)
+obtenerMaximoDeTuplas [tupla] = tupla
+obtenerMaximoDeTuplas ((fila, maximo) : cola)
+    | maximo &lt; snd (obtenerMaximoDeTuplas cola) = obtenerMaximoDeTuplas cola
+    | otherwise = (fila, maximo)
+
+filaConMaximo :: [[Integer]] -&gt; Integer -&gt; [(Integer, Integer)]
+filaConMaximo [fila] indice = [(indice, maximoFila fila)]
+filaConMaximo (cabeza : cola) indice =
+    (indice, maximoFila cabeza) : filaConMaximo cola (indice+1)
+
+maximoFila :: [Integer] -&gt; Integer
+maximoFila [elemento] = elemento
+maximoFila (num1 : num2 : cola)
+    | num1 &lt; num2 = maximoFila (num2 : cola) 
+    | otherwise = maximoFila (num1 : cola) 
+
+{--
+Siendo la última modificación con la solución final:
+COMPLETE FECHA y HORA DE ULTIMA MODIFICACIÓN ACA
+1/10 14:42
+--}
+
+</code></pre>
+<h2>Resultado de la compilacion</h2>
+<pre><code>[1 of 1] Compiling SolucionT2       ( correcciones/parcialtt_funcional/alonso_nahuel_45809011/submission.hs.main.hs, correcciones/parcialtt_funcional/alonso_nahuel_45809011/submission.hs.main.o )
+
+</code></pre>
+<h2>Ejecucion de los tests</h2>
+<h3>tema2-test-ej1.hs.compilacion.out</h3>
+<p>Puntaje del ej: 2 / 2</p>
+<pre><code>
+
+Cases: 7  Tried: 1  Errors: 0  Failures: 0
+
+Cases: 7  Tried: 2  Errors: 0  Failures: 0
+
+Cases: 7  Tried: 3  Errors: 0  Failures: 0
+
+Cases: 7  Tried: 4  Errors: 0  Failures: 0
+
+Cases: 7  Tried: 5  Errors: 0  Failures: 0
+
+Cases: 7  Tried: 6  Errors: 0  Failures: 0
+
+
+Cases: 7  Tried: 7  Errors: 0  Failures: 0
+
+
+Cases: 7  Tried: 7  Errors: 0  Failures: 0
+
+</code></pre>
+<h3>tema2-test-ej2.hs.compilacion.out</h3>
+<p>Puntaje del ej: 2 / 2</p>
+<pre><code>
+
+Cases: 11  Tried: 1  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 2  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 3  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 4  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 5  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 6  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 7  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 8  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 9  Errors: 0  Failures: 0
+
+Cases: 11  Tried: 10  Errors: 0  Failures: 0
+
+
+Cases: 11  Tried: 11  Errors: 0  Failures: 0
+
+
+Cases: 11  Tried: 11  Errors: 0  Failures: 0
+
+</code></pre>
+<h3>tema2-test-ej3.hs.compilacion.out</h3>
+<p>Puntaje del ej: 2 / 2</p>
+<pre><code>
+
+Cases: 6  Tried: 1  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 2  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 3  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 4  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 5  Errors: 0  Failures: 0
+
+
+Cases: 6  Tried: 6  Errors: 0  Failures: 0
+
+
+Cases: 6  Tried: 6  Errors: 0  Failures: 0
+
+</code></pre>
+<h3>tema2-test-ej4.hs.compilacion.out</h3>
+<p>Puntaje del ej: 2 / 2</p>
+<pre><code>
+
+Cases: 6  Tried: 1  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 2  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 3  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 4  Errors: 0  Failures: 0
+
+Cases: 6  Tried: 5  Errors: 0  Failures: 0
+
+
+Cases: 6  Tried: 6  Errors: 0  Failures: 0
+
+
+Cases: 6  Tried: 6  Errors: 0  Failures: 0
+
+</code></pre>
+<h3>mchoice.json-ej5.compilacion.out</h3>
+<p>Puntaje del ej: 1 / 1</p>
+<pre><code>mchoice ej5: respuesta del alumno=2, respuesta correcta=2
+
+Ran 1 test in 0 seconds
+
+OK
+
+</code></pre>
+<h3>mchoice.json-ej6.compilacion.out</h3>
+<p>Puntaje del ej: 1 / 1</p>
+<pre><code>mchoice ej6: respuesta del alumno=2, respuesta correcta=2
+
+Ran 1 test in 0 seconds
+
+OK
+
+</code></pre>
+<p>FIN</p>
