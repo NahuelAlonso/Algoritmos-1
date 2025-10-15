@@ -51,17 +51,28 @@ def gano_dia(tablero:List[List[str]], str)->bool:
     )
 
 
-# print(transponer([[1,2,3,4,5],[6,7,8,9,10],[11,12,12,14,15]]))
-print(quien_gana_tateti([
-    ['O','','X'],
-    ['X','O','X'],
-    ['','X','']
-    ]))
 
-def exponenciacion_matriz(dimension:int, exponente:int)->List[List[int]]:
-    matriz:List[List[int]]
+def exponenciacion_matriz(dimension:int, exponente:int)->List[List[float]]:
+    matriz:List[List[int]] = []
+    resultante:List[List[int]] = []
+    
     for row in range(dimension):
         matriz.append([])
+        resultante.append([])
         for col in range(dimension):
-            matriz[row].append(np.random.random(()))
-    print(matriz)
+            rng:float = np.random.default_rng().random()
+            matriz[row].append(rng)
+            resultante[row].append(0)
+
+    for time in range(exponente):
+        for row in range(dimension):
+            for col in range(dimension):
+                for i in range(dimension):
+                    resultante[row][col] += matriz[row][i]*matriz[i][col]
+    
+    
+    return resultante
+
+
+
+print(exponenciacion_matriz(3,10))
