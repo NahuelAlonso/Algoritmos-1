@@ -1,6 +1,7 @@
 from typing import Any
 from enum import Enum
-
+from typing import List as list #Tuve que añadirlo para que me compile en mi computadora
+from typing import Tuple as tuple #Tuve que añadirlo para que me compile en mi computadora
 
 class Celda(Enum):
     VACÍO = 100
@@ -553,7 +554,7 @@ def quedaBarcoAdyacenteAOtroBarcoEnGrilla(barco: BarcoEnGrilla, grilla: Grilla) 
         PRE: sonPosicionesVálidasEnGrilla(barco, grilla)
     """
     posiciónActual = 0
-    while posiciónActual < len(barco) and not hayBarcoAdyacenteEnGrilla(barco[posiciónActual], grilla):
+    while posiciónActual < len(barco) and not hayBarcoAdyacenteEnGrilla(grilla, barco[posiciónActual]):
         posiciónActual += 1
     return posiciónActual == len(barco)
 

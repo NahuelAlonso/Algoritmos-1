@@ -1,5 +1,7 @@
 from typing import Any
 from biblioteca import *
+from queue import Queue as Cola
+from typing import List as list
 
 ## Ejercicio 1
 
@@ -43,9 +45,9 @@ def nuevoTablero(cantidadDeFilas: int, cantidadDeColumnas: int) -> Tablero:
 
 def grillaVacia(cantidadDeFilas: int, cantidadDeColumnas: int) -> Grilla:
     res:Grilla = []
-    for fila in range(cantidadDeFilas):
+    for _ in range(cantidadDeFilas):
         listaAuxiliar:list[Celda] = []
-        for columna in range(cantidadDeColumnas):
+        for _ in range(cantidadDeColumnas):
             listaAuxiliar.append(VACÍO)
         res.append(listaAuxiliar)
     return res
@@ -61,27 +63,43 @@ def esEstadoDeJuegoVálido(estadoDeJuego: EstadoJuego) -> bool:
     
     cantidadDeFilas:int = cantidadDeFilasEstadoJuego(estadoDeJuego)
     cantidadDeColumnas:int = cantidadDeColumnasEstadoJuego(estadoDeJuego)
-    barcosDisponibles:list[Barco] = barcosDisponibles(estadoDeJuego)
-    turno:Jugador = turno(estadoDeJuego)
+    barcosDisponiblesSegunEstado:list[Barco] = barcosDisponibles(estadoDeJuego)
+    listaJugadorActual:list[Jugador] = estadoDeJuego[2]
     tableroUNO:Tablero = tableroDeJugador(estadoDeJuego, UNO)
     tableroDOS:Tablero = tableroDeJugador(estadoDeJuego, DOS)
     tableroValidoUNO:bool = tableroValidoEnJuego(tableroUNO, estadoDeJuego)
     tableroValidoDOS:bool = tableroValidoEnJuego(tableroDOS, estadoDeJuego)
-    verificaCoincidenPosicionesAtacadas:bool = coincidenPosicionesAtacadas(tableroUNO, tableroDOS)
+    verificaCoincidenPosicionesAtacadas:bool = False
+
+    
+    if tableroValidoDOS and tableroValidoUNO:
+        #Si no son todas las grillas matrices, o tienen diferentes dimensiones,
+        #   coincidenPosicionesAtacadas tiraría error
+        verificaCoincidenPosicionesAtacadas = coincidenPosicionesAtacadas(tableroUNO, tableroDOS)
+    else:
+        pass
     
     return (
         cantidadDeFilas >= 1 and
         cantidadDeFilas <= 26 and
         cantidadDeColumnas > 0 and
-        len(turno) == 1 and
-        len(barcosDisponibles) > 0 and
+        len(listaJugadorActual) == 1 and
+        len(barcosDisponiblesSegunEstado) > 0 and
         tableroValidoUNO and
         tableroValidoDOS and
         verificaCoincidenPosicionesAtacadas
     )
     
 def tableroValidoEnJuego (tablero:Tablero, estadoDeJuego:EstadoJuego) -> bool:
+    '''Indica si *tablero* es un tablero válido.
+        Para esto, debe cumplir que ambas grillas sean matrices, cumplan grillaVálidaEnJuego y que las posiciones atacadas coincidan
+    '''
+    dimensionesGrillas:Dimensiones = dimensionesEstadoJuego(estadoDeJuego)
     return (
+        dimensionesGrillas == dimensionesGrilla(grillaLocal(tablero)) and
+        dimensionesGrillas == dimensionesGrilla(grillaOponente(tablero)) and
+        esMatrizVálida(grillaLocal(tablero)) and
+        esMatrizVálida(grillaOponente(tablero)) and
         grillaVálidaEnJuego(grillaLocal(tablero), estadoDeJuego) and
         grillaVálidaEnJuego(grillaOponente(tablero), estadoDeJuego) and
         coincidenBarcosEnGrilla(barcosDisponibles(estadoDeJuego), grillaLocal(tablero))
@@ -97,13 +115,19 @@ def tamaños(barcos: list[BarcoEnGrilla]) -> list[int]:#TODO:Probar si consigna 
     return listaConTamaños
 
 def mismosElementos(lista1: list[Any], lista2: list[Any]) -> bool:#TODO: Probar
-    noApareceEnLista2: bool = False
+    lista2ContieneLista1: bool = True
+    lista1ContieneLista2: bool = True
     for elementoEnLista1 in lista1:
         if elementoEnLista1 not in lista2:
-            noApareceEnLista2 = True
+            lista2ContieneLista1 = False
         else:
             pass
-    return not noApareceEnLista2
+    for elementoEnLista2 in lista2:
+        if elementoEnLista2 not in lista1:
+            lista1ContieneLista2 = False
+        else:
+            pass
+    return lista2ContieneLista1 and lista1ContieneLista2
     
 def coincidenPosicionesAtacadas(tablero:Tablero, tableroOponente:Tablero) -> bool:
     tableroUnoGrillaLocal:Grilla = grillaLocal(tablero)
@@ -114,9 +138,9 @@ def coincidenPosicionesAtacadas(tablero:Tablero, tableroOponente:Tablero) -> boo
     discrepanciaTableroDosGrillaOponente:bool = False#Si no está vacía la celda p del tableroDosGrillaOponente, la celda p del tableroUnoGrillaLocal debe tener igual valor
     cantidadDeNoVaciosUno:int = 0
     cantidadDeNoVaciosDos:int = 0
-    dimensionesGrilla = dimensionesGrilla(tableroUnoGrillaOponente)#Las cuatro grillas tienen las mismas dimensiones
-    alto = altoDimensiones(dimensionesGrilla)
-    ancho = anchoDimensiones(dimensionesGrilla)
+    dimensionesGrillas:Dimensiones = dimensionesGrilla(tableroUnoGrillaOponente)#Las cuatro grillas tienen las mismas dimensiones
+    alto = altoDimensiones(dimensionesGrillas)
+    ancho = anchoDimensiones(dimensionesGrillas)
 
 
     for fila in range(alto):
@@ -146,18 +170,22 @@ def coincidenPosicionesAtacadas(tablero:Tablero, tableroOponente:Tablero) -> boo
             else:
                 pass
 
-
     return(
         not discrepanciaTableroUnoGrillaOponente and
         not discrepanciaTableroDosGrillaOponente and
         0 <= cantidadDeNoVaciosUno - cantidadDeNoVaciosDos and
         cantidadDeNoVaciosUno - cantidadDeNoVaciosDos <= 1
     )
+
     
 ## Ejercicio 4
 
 def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> ResultadoDisparo:
-    """ Agregar docstring acá
+    """ 
+    Genera el estado del juego *estado_juego* luego de haber efectuado un disparo a la posición *posición*
+        PRE: juegoVálido
+        PRE: laPosiciónEsVálidaEnLaGrilla
+        PRE: posiciónNoAtacada
     """
     atacante:Jugador = turno(estado_juego)
     tableroAtacante:Tablero = tableroDeJugador(estado_juego, atacante)
@@ -171,22 +199,56 @@ def dispararEnPosición(estado_juego: EstadoJuego, posición: Posición) -> Resu
         resultado = NADA
         cambiarCeldaGrilla(tableroAtacadoGrillaLocal, posición, AGUA)
         cambiarCeldaGrilla(tableroAtacanteGrillaOponente, posición, AGUA)
-    elif celdaEnPosición(tableroAtacadoGrillaLocal, posición) == BARCO:#Pudo haber atacado a AGUA
+    else:
+        # celdaEnPosición(tableroAtacadoGrillaLocal, posición) == BARCO: #Porque no pudo haber atacado a AGUA
         resultado = TOCADO
         cambiarCeldaGrilla(tableroAtacadoGrillaLocal, posición, BARCO)#Redundante
         cambiarCeldaGrilla(tableroAtacanteGrillaOponente, posición, BARCO)
-    else:#Atacó a AGUA, qué debo hacer?
-        resultado = NADA
     return resultado
 
 
 ## Ejercicio 5
 
 def barcosEnGrilla(grilla: Grilla) -> list[BarcoEnGrilla]:
-    """ Agregar docstring acá
+    """ Indica los barcos ubicados en la grilla *grilla*
+        PRE: laGrillaEsVálida
+        PRE: hayUnaÚnicaFormaDeConstruirBarcos
     """
     
-    return [] # TODO: Implementame
+    posición:Posición = primeraPosiciónEnGrilla(grilla)
+    colaPosicionesConBarcos:Cola[Posición] = Cola()
+    barcos:list[BarcoEnGrilla] = []
 
+    if(celdaEnPosición(grilla, posición) == BARCO):
+        colaPosicionesConBarcos.put(posición)
+    else:
+        pass
 
+    while(not esLaÚltimaPosiciónEnGrilla(posición, grilla)):
+        posición = posiciónSiguienteEnGrilla(posición, grilla)
+        if(celdaEnPosición(grilla, posición) == BARCO):
+            colaPosicionesConBarcos.put(posición)
+        else:
+            pass
+    
+    while not colaPosicionesConBarcos.empty():
+        unirPosiciónABarcos(colaPosicionesConBarcos.get(), barcos)
+    
+    return barcos
+    
+def unirPosiciónABarcos(posición: Posición, barcos:list[BarcoEnGrilla]) -> None:
+    '''Si la posición *posición* es adyacente a algún barco en *barcos*, lo une a esta lista.
+    Si no, crea un nuevo barco en grilla
+    '''
+    seUnióABarco = False
+    for barco in barcos:
+        if hayPosiciónAdyacenteEn(posición, barco):
+            barco.append(posición)
+            seUnióABarco = True
+        else:
+            pass
 
+    if seUnióABarco == False:
+        barcos.append([posición])
+
+    return None
